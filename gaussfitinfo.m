@@ -1,28 +1,29 @@
-function [vars,gof] = gaussfitinfo(gfit, xdata, y_actual)
+function [gof] = gaussfitinfo(gfit, xdata, y_actual)
 %Takes in a Gauss fit from gaussfit function
-%Returns the parameters, goodness-of-fit, SSE, and r^2
+%Returns the goodness-of-fit, SSE, and r^2
 %Then plots the fit curve against the data
 
-%Example call: >> [var,gof] = gaussfitinfo(gfit,x,y) (where gfit is the
+%Example call: >> [gof] = gaussfitinfo(gfit,x,y) (where gfit is the
 %   Gaussian fit returned by gaussfit function)
 
 [vars,gof] = fit(xdata, y_actual, gfit)
 a = vars.a;
-b = vars.b; 
-%c (width) cannot be 0 or else Gauss fit would not be a continuous function
-if (vars.c ~= 0) c = vars.c;
+b = vars.b;
+c = vars.c;
+%d (width) cannot be 0 or else Gauss fit would not be a continuous function
+if (vars.d ~= 0) d = vars.d;
     else 'fit not possible!'
     end
 
 %Plot the curve that the function created and the actual y-values
 x = [min(xdata):.1:max(xdata)];
-y = a*exp(-((x-b).^2/(2*c^2)));
+y = a+b*exp(-((x-c).^2/(2*d^2)));
 plot(xdata,y_actual,'bo');
 hold on;
 plot(x,y,'k-');
 
 %Plot the predicted y-values located on the curve for comparison
-y_pred = a*exp(-((xdata-b).^2/(2*c^2)));
+y_pred = a+b*exp(-((xdata-c).^2/(2*d^2)));
 plot(xdata,y_pred,'ro');
 legend('y actual', 'gaussian curve', 'y predicted');
 
