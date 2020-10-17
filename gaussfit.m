@@ -4,6 +4,8 @@ function [fitfunction] = gaussfit (xdata, y_actual)
 
 %Example call: >> [gfit] = gaussfit(x,y)
 
+%Define custom fit options
+%Variables: a = peak height; b = peak x-location; c = width
 fo = fitoptions('Method','NonlinearLeastSquares',...
     'Lower',[-Inf,-Inf,0],... % lower bounds for [a b c]
     'Upper',[Inf,Inf,Inf],... % upper bounds for [a b c]
