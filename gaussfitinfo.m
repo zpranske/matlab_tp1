@@ -1,0 +1,37 @@
+function [vars,gof] = gaussfitinfo(gfit, xdata, y_actual)
+%Takes in a Gauss fit from gaussfit function
+%Returns the parameters, goodness-of-fit, SSE, and r^2
+%Then plots the fit curve against the data
+
+%Example call: >> [var,gof] = gaussfitinfo(gfit,x,y) (where gfit is the
+%   Gaussian fit returned by gaussfit function)
+
+[vars,gof] = fit(xdata, y_actual, gfit)
+a = vars.a;
+b = vars.b; 
+%c (width) cannot be 0 or else Gauss fit would not be a continuous function
+if (vars.c ~= 0) c = vars.c;
+    else 'fit not possible!'
+    end
+
+%Plot the curve that the function created and the actual y-values
+x = [min(xdata):.1:max(xdata)];
+y = a*exp(-((x-b).^2/(2*c^2)));
+plot(xdata,y_actual,'bo');
+hold on;
+plot(x,y,'k-');
+
+%Plot the predicted y-values located on the curve for comparison
+y_pred = a*exp(-((xdata-b).^2/(2*c^2)));
+plot(xdata,y_pred,'ro');
+legend('y actual', 'gaussian curve', 'y predicted');
+
+%Calculations for SSE and r^2 of fit function
+mn = mean(y_actual);
+meanvar = y_actual - mn;
+s_mn = sum(meanvar.^2);
+
+linearresiduals = y_actual - y_pred;
+sse_gauss = sum(linearresiduals.^2)
+
+r2_gauss = 1-sse_gauss/s_mn
