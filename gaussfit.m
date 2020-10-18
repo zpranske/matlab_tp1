@@ -1,4 +1,4 @@
-function [a,b,c,d,fitfunction] = gaussfit (xdata, y_actual)
+function [a,b,c,d] = gaussfit (xdata, y_actual)
 %Takes as input x and y values of data (must be nx1 vectors)
 %Returns the paramaters a, b, c, d such that f(x) = a+b*exp(-((x-c)^2/(2*d^2)), d!=0
 
@@ -13,7 +13,7 @@ fo = fitoptions('Method','NonlinearLeastSquares',...
 
 %Create fit and get fit parameters
 fitfunction = fittype('a+b*exp(-((x-c)^2*(2*d^2)^(-1)))', 'options', fo);
-[vars,gof] = fit(xdata, y_actual, fitfunction)
+[vars,gof] = fit(xdata, y_actual, fitfunction);
 a = vars.a;
 b = vars.b;
 c = vars.c;
